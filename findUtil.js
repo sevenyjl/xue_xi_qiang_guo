@@ -1,5 +1,6 @@
+let config = require("./config.js")
 
-let findPic=function (picPath, options, isClick, isDebug) {
+let findPic = function (picPath, options, isClick, isDebug) {
     let pic = images.read(picPath);
     let point = findImage(images.captureScreen(), pic, options);
     let isFind = false;
@@ -24,4 +25,34 @@ let findPic=function (picPath, options, isClick, isDebug) {
     return isFind;
 }
 
-exports.findPic=findPic;
+let waitAppear = function (colorInfoList, successFunction, errorFunction) {
+    let point = null;
+    let errorInfo = "可能错误了";
+    try {
+        let captureScreen = images.captureScreen();
+        for (colorInfoElement of colorInfoList) {
+            const result = images.findMultiColors(captureScreen, colorInfoElement.color, colorInfoElement.points, colorInfoElement.options);
+            if (result) {
+                point = result;
+                break;
+            }
+        }
+    } catch (e) {
+        errorInfo = e;
+    } finally {
+        if (point) {
+            successFunction(point);
+        } else {
+            errorFunction(errorInfo);
+        }
+    }
+}
+
+
+images.requestScreenCapture()
+waitAppear(config.clickConfig[device.width + "-" + device.height]["我的"],(res)=>{
+log(res.x,res.y)
+},(error)=>{log(error)})
+
+// exports.findPic = findPic;
+// module.exports.waitAppear = waitAppear;

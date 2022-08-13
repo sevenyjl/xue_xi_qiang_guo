@@ -5,8 +5,8 @@ function get_baidu_token() {
         'https://aip.baidubce.com/oauth/2.0/token',
         {
             grant_type: 'client_credentials',
-            client_id: config.baidu_ocr.ak,
-            client_secret: config.baidu_ocr.sk
+            client_id: config.baiduOcr.ak,
+            client_secret: config.baiduOcr.sk
         }
     );
     return res.body.json()['access_token'];

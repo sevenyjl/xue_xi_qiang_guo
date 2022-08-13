@@ -1,6 +1,6 @@
 let RunCore = require("./study_core.js")
-let findUtil = require("./findUtil.js")
 let baidu_ocr_api = require("./baiduOcr.js")
+let buttonFunction = require("./buttonFunction.js")
 images.requestScreenCapture()
 
 var task = {
@@ -49,47 +49,64 @@ var runCore = new RunCore(task)
 var base_path = "/sdcard/Pictures/Screenshots"
 
 
-
 function countTask() {
     swipe(500, 300, 500, 1412, 500)
     while (true) {
-        swipe(500, 1412, 500, 300, 1000)
-        let page = baidu_ocr_api(captureScreen())
-        let findNow = null;
-        for (baiduOcrResult of page) {
-            if (baiduOcrResult.words === "每周答题") {
-                return;
-            }
-            if (findNow) {
-                if (baiduOcrResult.words.indexOf("已获") === 0) {
-                    if (task[findNow]) {
-                        task[findNow].getSocre = parseInt(baiduOcrResult.words.slice(2, 3))
+        if (isInAppName("学习强国")) {
+            swipe(500, 1412, 500, 300, 1000)
+            let page = baidu_ocr_api(captureScreen())
+            let findNow = null;
+            for (baiduOcrResult of page) {
+                if (baiduOcrResult.words === "每周答题") {
+                    return;
+                }
+                if (findNow) {
+                    if (baiduOcrResult.words.indexOf("已获") === 0) {
+                        if (task[findNow]) {
+                            task[findNow].getSocre = parseInt(baiduOcrResult.words.slice(2, 3))
+                        }
+                        findNow = null;
                     }
-                    findNow = null;
-                }
-            } else {
-                if (task[baiduOcrResult.words]) {
-                    findNow = baiduOcrResult.words;
+                } else {
+                    if (task[baiduOcrResult.words]) {
+                        findNow = baiduOcrResult.words;
+                    }
                 }
             }
+            sleep(3000)
+        } else {
+            break
         }
-        sleep(3000)
     }
 }
 
+function isInAppName(appName) {
+    return getPackageName(appName) === currentPackage();
+}
 
-while (true) {
-    if (getPackageName("学习强国") === currentPackage()) {
-        runCore.run()
+
+// while (true) {
+let isDoTask = false;
+for (let i = 0; i < 20; i++) {
+    if (isInAppName("学习强国")) {
+        // runCore.run()
         sleep(3000)
+        if (isDoTask) {
+            buttonFunction.boBaoClick()
+        } else {
+            buttonFunction.woDeClick()
+            buttonFunction.xueXiJiFenClick()
+            if (buttonFunction.quClick()) {
+                isDoTask = true;
+            }
+        }
     } else {
         app.launchApp('学习强国');
         sleep(3000)
         // 检查任务
-        findUtil.findPic(base_path + "/学习积分.png", { region: [0, 0, 500, 1500] }, true, true)
-        findUtil.findPic(base_path + "/我的.png", { region: [0, 0, 500, 1500] }, true, true)
-        countTask()
-        runCore=new RunCore(task)
+        // countTask()
+        // runCore = new RunCore(task)
     }
 }
+// }
 
