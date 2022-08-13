@@ -1,4 +1,5 @@
 let config = require("./config.js")
+let commonUtils = require("./commonUtils.js")
 
 let waitAppear = function (colorInfoList, successFunction, errorFunction) {
     let point = null;
@@ -48,14 +49,26 @@ let xueXiJiFenClick = function () {
     })
 }
 
-let boBaoClick = function () {
-    return simpleWaitAppear("播报", (res) => {
+let boBaoClick = function (times) {
+    if (times === 0) {
+        return true;
+    }
+    let result = simpleWaitAppear("播报", (res) => {
         click(res.x, res.y)
         sleep(300)
         click(res.x - 350, res.y)
         sleep(10000)
         back()
+        sleep(500)
     });
+    if (result) {
+        for ( i = 0; i < commonUtils.randomNumber(2, 4); i++) {
+            swipe(257, 600, 244, 200, 500)
+        }
+        sleep(500)
+        return boBaoClick(times - 1)
+    }
+    return result;
 }
 
 
@@ -65,14 +78,6 @@ let quClick = function () {
     });
 }
 
-
-if (woDeClick()) {
-    sleep(300)
-    if (xueXiJiFenClick()) {
-        sleep(300)
-        quClick()
-    }
-}
 
 module.exports.boBaoClick = boBaoClick;
 module.exports.woDeClick = woDeClick;

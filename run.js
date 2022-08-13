@@ -85,28 +85,29 @@ function isInAppName(appName) {
 }
 
 
-// while (true) {
-let isDoTask = false;
-for (let i = 0; i < 20; i++) {
-    if (isInAppName("学习强国")) {
-        // runCore.run()
-        sleep(3000)
-        if (isDoTask) {
-            buttonFunction.boBaoClick()
-        } else {
-            buttonFunction.woDeClick()
-            buttonFunction.xueXiJiFenClick()
-            if (buttonFunction.quClick()) {
-                isDoTask = true;
-            }
-        }
-    } else {
-        app.launchApp('学习强国');
-        sleep(3000)
-        // 检查任务
-        // countTask()
-        // runCore = new RunCore(task)
-    }
-}
+// // while (true) {
+// let isDoTask = false;
+// if (isInAppName("学习强国")) {
+//     // runCore.run()
+//     sleep(3000)
+//     if (isDoTask) {
+//         console.log("==========",buttonFunction.boBaoClick(3));
+//     } else {
+//         buttonFunction.woDeClick()
+//         sleep(1000)
+//         buttonFunction.xueXiJiFenClick()
+//         sleep(1000)
+//         if (buttonFunction.quClick()) {
+//             isDoTask = true;
+//         }
+//     }
+// } else {
+//     app.launchApp('学习强国');
+//     sleep(3000)
+//     // 检查任务
+//     // countTask()
+//     // runCore = new RunCore(task)
 // }
+// }
+// buttonFunction.boBaoClick(10)
 
