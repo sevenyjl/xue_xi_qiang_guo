@@ -21,7 +21,7 @@ public class DemoSobel extends BaseOpenCv {
         int c;
 
         /// 装载图像
-        src = imread("E:\\aaa-project\\autojs\\Screenshots\\screen_2022-08-13-17-56-49.png");
+        src = imread("D:\\project\\xue_xi_qiang_guo\\openCV-study\\src\\main\\resources\\images\\screen_2022-08-13-17-56-49.png");
         if (src.empty()) {
             System.out.println("读取文件错误");
             return;
